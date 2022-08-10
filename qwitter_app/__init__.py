@@ -1,0 +1,1 @@
+default_app_config = 'qwitter_app.apps.QwitterAppConfig'
