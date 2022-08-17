@@ -25,9 +25,18 @@ def profile_list(request):
 
 
 def profile(request, pk):
-    if 'profile' in cache:
-        profile = cache.get('profile')
-    else:
-        profile = get_object_or_404(Profile, id=pk)
-        cache.set('profile', profile, timeout=CACHE_TIMEOUT)
+    if not hasattr(request.user, 'profile'):
+        missing_profile = Profile(user=request.user)
+        missing_profile.save()
+
+    profile = get_object_or_404(Profile, id=pk)
+    if request.method == 'POST':
+        current_profile = request.user.profile
+        data = request.POST
+        action = data.get('follow')
+        if action == 'follow':
+            current_profile.follows.add(profile)
+        elif action == 'unfollow':
+            current_profile.follows.remove(profile)
+        current_profile.save()
     return render(request, 'qwitter_app/profile.html', {'profile': profile})
