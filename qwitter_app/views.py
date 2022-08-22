@@ -12,7 +12,7 @@ from qwitter_app.models import Profile
 
 
 def dashboard(request):
-    return render(request, 'base.html')
+    return render(request, 'qwitter_app/dashboard.html')
 
 
 def profile_list(request):
@@ -26,8 +26,8 @@ def profile_list(request):
 
 def profile(request, pk):
     if not hasattr(request.user, 'profile'):
-        missing_profile = Profile(user=request.user)
-        missing_profile.save()
+        profile = Profile(user=request.user)
+        profile.save()
 
     profile = get_object_or_404(Profile, id=pk)
     if request.method == 'POST':

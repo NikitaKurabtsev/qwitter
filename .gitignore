@@ -137,3 +137,5 @@ Pipfile
 Pipfile.lock
 
 .idea/*
+
+.dump.rdb
