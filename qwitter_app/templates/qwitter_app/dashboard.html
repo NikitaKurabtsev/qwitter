@@ -3,16 +3,44 @@
 {% block content %}
 
 <div class="column">
-    {% for followed in user.profile.follows.all %}
-        {% for qweet in followed.user.qweets.all %}
-            <div class="box">
-                {{ qweet.body }}
-                <span class="is-small has-text-grey-light">
-                    ({{ qweet.created_at }} by {{ qweet.user.username }}
-                </span>
-            </div>
-        {% endfor %}
-    {% endfor %}
+    {% for qweet in qweets %}
+    <div class="box">
+        {{qweet.body}}
+        <span class="is-small has-text-grey-light">
+            ({{ qweet.created_at }} by {{ qweet.user.username }}
+        </span>
+    </div>
+{% endfor %}
+</div>
+
+<div class="column is-one-third">
+    <div class="block">
+        <a href="{% url 'qwitter_app:profile_list' %} ">
+            <button class="button is-dark is-outlined is-fullwidth">
+                All Profiles
+            </button>
+        </a>
+    </div>
+    <div class="block">
+        <a href="{% url 'qwitter_app:profile' request.user.profile.id %} ">
+            <button class="button is-info is-light is-outlined is-fullwidth">
+                My Profile
+            </button>
+        </a>
+    </div>
+    <div class="block">
+        <div class="block">
+            <h2 class="title is-2">Add a Qweet</p>
+        </div>
+        <div class="block">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="button is-info is-fullwidth is-medium mt-5"
+                    type="submit">Qweet
+            </button>
+        </form>
+    </div>
 </div>
 
 {% endblock content %}

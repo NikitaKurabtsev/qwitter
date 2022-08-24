@@ -1,18 +1,34 @@
-from socket import timeout
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.cache import cache
 from django.conf import settings
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 
 from qwitter.settings import CACHE_TIMEOUT
-from qwitter_app.models import Profile
+from qwitter_app.models import Profile, Qweet
+from qwitter_app.forms import QweetForm
 
 
 # CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 
 def dashboard(request):
-    return render(request, 'qwitter_app/dashboard.html')
+    form = QweetForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            qweet = form.save(commit=False)
+            qweet.user = request.user
+            qweet.save()
+            return redirect('qwitter_app:dashboard')
+
+    followed_qweets = Qweet.objects.filter(
+        user__profile__in=request.user.profile.follows.all()
+    ).order_by('-created_at')
+
+    return render(
+        request, 
+        'qwitter_app/dashboard.html', 
+        {'form': form, 'qweets': followed_qweets}
+    )
 
 
 def profile_list(request):

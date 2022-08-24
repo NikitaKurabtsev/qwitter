@@ -13,7 +13,7 @@ class Profile(models.Model):
         return self.user.username
 
 
-class Qweets(models.Model):
+class Qweet(models.Model):
     user = models.ForeignKey(
         User, related_name='qweets', on_delete=models.DO_NOTHING
     )
