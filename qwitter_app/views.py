@@ -39,6 +39,10 @@ def profile_list(request):
         cache.set('profiles', profiles, timeout=CACHE_TIMEOUT)
     return render(request, 'qwitter_app/profile_list.html', {'profiles': profiles})
 
+# def profile_list(request):
+#     profiles = Profile.objects.exclude(user=request.user).select_related('user')  
+#     return render(request, 'qwitter_app/profile_list.html', {'profiles': profiles})
+
 
 def profile(request, pk):
     if not hasattr(request.user, 'profile'):
