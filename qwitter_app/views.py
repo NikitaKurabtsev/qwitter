@@ -1,12 +1,11 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.core.cache import cache
 from django.conf import settings
+from django.core.cache import cache
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
+from django.shortcuts import get_object_or_404, redirect, render
 
 from qwitter.settings import CACHE_TIMEOUT
-from qwitter_app.models import Profile, Qweet
 from qwitter_app.forms import QweetForm
-
+from qwitter_app.models import Profile, Qweet
 
 # CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
