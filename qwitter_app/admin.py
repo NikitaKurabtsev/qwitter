@@ -14,7 +14,5 @@ class UserAdmin(admin.ModelAdmin):
     inlines = [ProfileInLine]
 
 
-admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
 admin.site.unregister(Group)
 admin.site.register(Qweet)

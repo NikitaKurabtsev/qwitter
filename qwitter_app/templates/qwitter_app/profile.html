@@ -55,7 +55,7 @@
             {% for following in profile.follows.all %}
                 <ul style="margin-left: 0px">
                     <button class="button is-info is-light is-medium">
-                            <a href="{% url 'qwitter_app:profile' following.id %}">
+                            <a href="{% url 'qwitter_app:profile' following.pk %}">
                                 {{ following }}
                             </a>
                     </button>
@@ -74,7 +74,7 @@
             {% for follower in profile.followed_by.all %}
                 <ul style="margin-left: 0px">
                     <button class="button is-info is-light is-medium">
-                        <a href="{% url 'qwitter_app:profile' follower.id %}">
+                        <a href="{% url 'qwitter_app:profile' follower.pk %}">
                             {{ follower }}
                         </a>
                     </button>

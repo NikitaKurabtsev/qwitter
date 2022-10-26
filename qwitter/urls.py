@@ -5,6 +5,7 @@ from qwitter import settings
 
 urlpatterns = [
     path('', include('qwitter_app.urls')),
+    path('users/', include('users.urls')),
     path('admin/', admin.site.urls),
 ]
 

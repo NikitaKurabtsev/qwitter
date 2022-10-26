@@ -17,8 +17,8 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['0.0.0.0']
+ALLOWED_HOSTS = ['*']
+
 
 
 # Application definition
@@ -33,8 +33,11 @@ INSTALLED_APPS = [
 
     # My apps
     'qwitter_app',
+    'users',
 
+    # Other
     'debug_toolbar',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -69,10 +72,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'qwitter.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -80,6 +79,16 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres',
+#         'USER': 'postgres',
+#         'PASSWORD': 'postgres',
+#         'HOST': 'db',
+#         'PORT': 5432
+#     }
+# }
 
 # CACHES = {
 #     "default": {
@@ -136,3 +145,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 INTERNAL_IPS = ('127.0.0.1', )
 
 CACHE_TIMEOUT = 60*2
+
+AUTH_USER_MODEL = 'users.CustomUser'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

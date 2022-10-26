@@ -2,13 +2,13 @@ from django.conf import settings
 from django.core.cache import cache
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.auth.decorators import login_required
 
 from qwitter.settings import CACHE_TIMEOUT
 from qwitter_app.forms import QweetForm
 from qwitter_app.models import Profile, Qweet
 
 # CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
-
 
 def dashboard(request):
     form = QweetForm(request.POST or None)
@@ -19,14 +19,21 @@ def dashboard(request):
             qweet.save()
             return redirect('qwitter_app:dashboard')
 
-    followed_qweets = Qweet.objects.filter(
-        user__profile__in=request.user.profile.follows.all()
-    ).order_by('-created_at')
+    if request.user.is_authenticated:
+        qweets = Qweet.objects.filter(
+            user__profile__in=request.user.profile.follows.all()
+        ).order_by('-created_at')
+    else:
+        qweets = Qweet.objects.all().select_related('user')
+    
+    # qweets = Qweet.objects.filter(
+    #         user__profile__in=request.user.profile.follows.all()
+    #     ).order_by('-created_at')
 
     return render(
         request, 
         'qwitter_app/dashboard.html', 
-        {'form': form, 'qweets': followed_qweets}
+        {'form': form, 'qweets': qweets}
     )
 
 
@@ -49,7 +56,7 @@ def profile(request, pk):
         profile = Profile(user=request.user)
         profile.save()
 
-    profile = get_object_or_404(Profile, id=pk)
+    profile = get_object_or_404(Profile, pk=pk)
     if request.method == 'POST':
         current_profile = request.user.profile
         data = request.POST
